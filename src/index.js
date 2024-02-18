@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
 subscriber.subscribe("message-public_another");
 
 subscriber.on("message", async (channel, message) => {
-  if (channel === "message-public_another") {
+  if (channel === "message-public_another"|| channel==="message-publish") {
     console.log("aagya from another", message);
 
     const producer = kafka.producer();

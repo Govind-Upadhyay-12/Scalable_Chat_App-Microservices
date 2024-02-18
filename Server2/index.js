@@ -2,6 +2,7 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import Redis from "ioredis";
+import {kafka } from "../apache-kafka/client.js"
 
 const app = express();
 const server = http.createServer(app);
@@ -28,9 +29,29 @@ io.on("connection", (socket) => {
 
 subscriber.subscribe("message-publish");
 
-subscriber.on("message", (channel, message) => {
-  if (channel === "message-publish") {
+subscriber.on("message", async(channel, message) => {
+  if (channel === "message-public_another"|| channel==="message-publish") {
     console.log("aagya", message);
+    const producer = kafka.producer();
+
+    console.log("Connecting Producer");
+    await producer.connect();
+    console.log("Producer Connected Successfully");
+
+    await producer.send({
+      topic: "message-update",
+      messages: [
+        {
+          value: message,
+        },
+      ],
+    });
+
+    console.log("Message sent to Kafka topic");
+
+    await producer.disconnect();
+    console.log("Producer disconnected");
+  
     io.emit("aagya", message);
   }
 });
