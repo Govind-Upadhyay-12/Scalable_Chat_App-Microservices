@@ -11,10 +11,10 @@ io.on("connection", (socket) => {
 
   socket.on("message-bejte", (message) => {
     console.log("message aara hai", message);
-    io.emit("message",message);
-  }); 
-});
+    io.emit("message", message);
+  });
+}); 
 
-server.listen(3001, () => {
-  console.log("server is started at port 3001");
+server.listen(8080, () => {
+  console.log("server is started at port 8080");
 });
