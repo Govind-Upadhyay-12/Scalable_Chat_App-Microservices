@@ -11,6 +11,7 @@ socket.on("message", (message) => {
 socket.on("disconnect", () => {
   console.log("Disconnected from server");
 });
+socket.on("aagy")
 const msg = "hey i am from another server "; 
 function sendMsg() { 
   socket.emit("message-bejte", msg);  

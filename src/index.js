@@ -1,18 +1,31 @@
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
+import Redis from "ioredis";
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+const publisher=new Redis({
+  host:"localhost",
+  port:6379
+})
+
+const subscriber=new Redis({
+  host:"localhost",
+  port:6379
+})
+
+
 io.on("connection", (socket) => {
   console.log("new user is connected", socket.id);
 
-  socket.on("message-bejte", (message) => {
+  socket.on("message-bejte", async(message) => {
     console.log("message aara hai", message);
-    io.emit("message",message);
-  }); 
+    await publisher.publish("message-publish",message)
+    io.emit("message", message);
+  });
 });
 
 server.listen(3001, () => {
