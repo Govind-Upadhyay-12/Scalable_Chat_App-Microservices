@@ -11,7 +11,7 @@ socket.on("message", (message) => {
 socket.on("disconnect", () => {
   console.log("Disconnected from server");
 }); 
-const msg = "hey how are you govind";
+const msg = "hey how are you govind"; 
 function sendMsg() {
   socket.emit("message-bejte", msg);
 }

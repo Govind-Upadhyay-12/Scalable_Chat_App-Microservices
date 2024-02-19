@@ -4,21 +4,22 @@ import { Server } from "socket.io";
 import Redis from "ioredis";
 import { kafka } from "../apache-kafka/client.js";
 import { runConsumer } from "./consumer.js";
+import prisma from "../DB/db.config.js";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const server = http.createServer(app);
 const io = new Server(server);
 
-const publisher = new Redis({ 
-  host: "localhost", 
+const publisher = new Redis({
+  host: "localhost",
   port: 6379,
 });
 
 const subscriber = new Redis({
   host: "localhost",
   port: 6379,
-}); 
+});
 
 io.on("connection", (socket) => {
   console.log("new user is connected", socket.id);
@@ -33,7 +34,7 @@ io.on("connection", (socket) => {
 subscriber.subscribe("message-public_another");
 
 subscriber.on("message", async (channel, message) => {
-  if (channel === "message-public_another"|| channel==="message-publish") {
+  if (channel === "message-public_another" || channel === "message-publish") {
     console.log("aagya from another", message);
 
     const producer = kafka.producer();
@@ -77,7 +78,7 @@ async function init() {
 
   console.log("Disconnecting Admin..");
   await admin.disconnect();
-} 
+}
 init();
 
 server.listen(3001, () => {

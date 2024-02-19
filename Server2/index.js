@@ -2,7 +2,7 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import Redis from "ioredis";
-import {kafka } from "../apache-kafka/client.js"
+import { kafka } from "../apache-kafka/client.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -29,8 +29,8 @@ io.on("connection", (socket) => {
 
 subscriber.subscribe("message-publish");
 
-subscriber.on("message", async(channel, message) => {
-  if (channel === "message-public_another"|| channel==="message-publish") {
+subscriber.on("message", async (channel, message) => {
+  if (channel === "message-public_another" || channel === "message-publish") {
     console.log("aagya", message);
     const producer = kafka.producer();
 
@@ -51,7 +51,7 @@ subscriber.on("message", async(channel, message) => {
 
     await producer.disconnect();
     console.log("Producer disconnected");
-  
+
     io.emit("aagya", message);
   }
 });

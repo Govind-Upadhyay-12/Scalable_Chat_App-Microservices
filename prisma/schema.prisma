@@ -10,12 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Chat{
-  id Int @id @default(autoincrement())
-  message String
+model Chat {
+  id         Int      @id @default(autoincrement())
+  message    String
   created_at DateTime @default(now())
 }
-
-
-
